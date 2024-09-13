@@ -1,7 +1,7 @@
 // Описаний в документації
-import SimpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox'
 // Додатковий імпорт стилів
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import 'simplelightbox/dist/simple-lightbox.min.css'
 
 const images = [
   {
@@ -67,9 +67,9 @@ const images = [
       'https://cdn.pixabay.com/photo/2019/05/17/04/35/lighthouse-4208843_1280.jpg',
     description: 'Lighthouse Coast Sea',
   },
-];
+]
 
-const galleryContainer = document.querySelector('.gallery');
+const galleryContainer = document.querySelector('.gallery')
 
 const galleryItemsMarkup = images
   .map(({ preview, original, description }) => {
@@ -84,14 +84,14 @@ const galleryItemsMarkup = images
             />
           </a>
         </li>
-      `;
+      `
   })
-  .join('');
+  .join('')
 
-galleryContainer.innerHTML = galleryItemsMarkup;
+galleryContainer.innerHTML = galleryItemsMarkup
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
   captionType: 'alt',
-});
+})
