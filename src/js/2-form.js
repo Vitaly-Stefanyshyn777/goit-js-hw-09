@@ -1,40 +1,56 @@
-let formData = {
+// Оголошуємо об'єкт formData
+const formData = {
   email: '',
   message: '',
 };
 
-const form = document.querySelector('.feedback-form');
-
-// Відстеження змін у формі та збереження даних в локальному сховищі
-form.addEventListener('input', event => {
-  const { name, value } = event.target;
-  formData[name] = value;
-  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
-});
-
-// Завантаження даних з локального сховища при завантаженні сторінки
-const storedData = localStorage.getItem('feedback-form-state');
-console.log(storedData);
-
-if (storedData) {
-  const parsedData = JSON.parse(storedData);
-  console.log(parsedData);
-  formData = parsedData;
-  form.elements.email.value = parsedData.email;
-  form.elements.message.value = parsedData.message;
+// Функція для збереження даних у локальне сховище
+function saveToLocalStorage(data) {
+  localStorage.setItem('feedback-form-state', JSON.stringify(data));
 }
 
-// Обробка відправки форми
+// Функція для завантаження даних з локального сховища
+function loadFromLocalStorage() {
+  const savedData = localStorage.getItem('feedback-form-state');
+  return savedData ? JSON.parse(savedData) : null;
+}
+
+// Отримуємо посилання на форму та її елементи
+const form = document.querySelector('.feedback-form');
+const emailInput = form.elements.email;
+const messageInput = form.elements.message;
+
+// Відстежуємо подію input на формі
+form.addEventListener('input', event => {
+  formData[event.target.name] = event.target.value;
+  saveToLocalStorage(formData);
+});
+
+// Завантажуємо дані з локального сховища при завантаженні сторінки
+document.addEventListener('DOMContentLoaded', () => {
+  const savedData = loadFromLocalStorage();
+  if (savedData) {
+    formData.email = savedData.email;
+    formData.message = savedData.message;
+    emailInput.value = savedData.email;
+    messageInput.value = savedData.message;
+  }
+});
+
+// Відстежуємо подію submit на формі
 form.addEventListener('submit', event => {
   event.preventDefault();
 
-  // Валідація даних
-  if (!formData.email || !formData.message) {
+  // Перевірка, чи заповнені всі поля
+  if (formData.email === '' || formData.message === '') {
     alert('Fill please all fields');
     return;
   }
 
-  // Очищення даних
+  // Виведення об'єкта formData у консоль
+  console.log(formData);
+
+  // Очищення локального сховища, об'єкта formData та полів форми
   localStorage.removeItem('feedback-form-state');
   formData.email = '';
   formData.message = '';
